@@ -20,5 +20,3 @@ app.include_router(stt_router, prefix="/stt")
 # 정적 파일 (HTML 프론트엔드)
 frontend_path = os.path.join(os.path.dirname(__file__), '..', 'frontend')
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
-
-
