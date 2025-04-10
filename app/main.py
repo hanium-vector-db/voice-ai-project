@@ -20,3 +20,10 @@ app.include_router(stt_router, prefix="/stt")
 # 정적 파일 (HTML 프론트엔드)
 frontend_path = os.path.join(os.path.dirname(__file__), '..', 'frontend')
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="localhost", port=8000, reload=True)
+
+# python -m app.main
+# uvicorn app.main:app --reload
