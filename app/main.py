@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.stt_router import router as stt_router
+from app.stt_router import router as stt_router # stt_router와 tts_router 임포트
+from app.tts_router import router as tts_router  # tts_router 임포트
+
 import os
 
 app = FastAPI()
@@ -16,6 +18,7 @@ app.add_middleware(
 
 # STT 라우터
 app.include_router(stt_router, prefix="/stt")
+app.include_router(tts_router, prefix="/tts")
 
 # 정적 파일 (HTML 프론트엔드)
 frontend_path = os.path.join(os.path.dirname(__file__), '..', 'frontend')

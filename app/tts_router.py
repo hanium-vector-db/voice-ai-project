@@ -8,7 +8,7 @@ router = APIRouter()
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@router.post("/tts/")
+@router.post("/")
 async def tts_endpoint(text: str = Form(...)):
     try:
         output_path = os.path.join(UPLOAD_DIR, "openai_tts_output.mp3")

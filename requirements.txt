@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 openai
-whisper
+openai-whisper
 gtts
 pydub
 python-dotenv
