@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.stt_router import router as stt_router # stt_router와 tts_router 임포트
-from app.tts_router import router as tts_router  # tts_router 임포트
+from app.routers.stt_router import router as stt_router # stt_router와 tts_router 임포트
+from app.routers.tts_router import router as tts_router  # tts_router 임포트
 
 import os
 
