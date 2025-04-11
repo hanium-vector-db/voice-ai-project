@@ -1,27 +1,36 @@
-from google.cloud import texttospeech
+import os
+import requests
+from dotenv import load_dotenv
 
-# Google TTS 클라이언트 초기화
-client = texttospeech.TextToSpeechClient()
+load_dotenv()  # .env 파일 불러오기
 
-def text_to_speech(text, output_path):
-    synthesis_input = texttospeech.SynthesisInput(text=text)  # 입력 텍스트 설정
-    voice = texttospeech.VoiceSelectionParams(
-        language_code="ko-KR",  # 한국어로 설정
-        ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
-    )
-    audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3  # 오디오 파일 형식 설정
-    )
-    response = client.synthesize_speech(
-        input=synthesis_input, voice=voice, audio_config=audio_config
-    )
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-    with open(output_path, "wb") as out:  # 파일을 이진 모드로 열기
-        out.write(response.audio_content)  # 응답의 오디오 내용을 파일에 쓰기
-    return output_path
+def text_to_speech(text: str, output_path: str = "output.mp3"): # 좌측 tts_service.py가 위치한 폴더에 저장
+   url = "https://api.openai.com/v1/audio/speech"
+   
+   headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-# 실행 코드
-output_path = "C:\\Users\\user\\Documents\\tts_output2.mp3"
-text = "안녕하세요 말하기 테스트 입니다"
-result_path = text_to_speech(text, output_path)
-print(f"Audio file saved to {result_path}")
+   data = {
+        "model": "tts-1",
+        "input": text,
+        "voice": "nova"
+    }
+
+   response = requests.post(url, headers=headers, json=data)
+
+   if response.status_code != 200:
+        raise Exception(f"TTS 요청 실패: {response.status_code} - {response.text}")
+
+   with open(output_path, "wb") as f:
+        f.write(response.content)
+
+   return output_path
+  
+if __name__ == "__main__":
+    text = "안녕하세요, 오픈AI 음성 변환 테스트입니다."
+    output = text_to_speech(text, "test_output.mp3")
+    print(f"음성 파일 저장 완료: {output}")
