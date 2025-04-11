@@ -4,11 +4,18 @@ import os
 
 router = APIRouter()
 
+# 출력 파일 저장할 uploads 폴더 경로
+UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 @router.post("/tts/")
 async def tts_endpoint(text: str = Form(...)):
     try:
-        output_path = os.path.join("uploads", "output.mp3")  # 출력 파일 경로 설정
-        result_path = text_to_speech(text, output_path)  # TTS 함수 호출
-        return {"message": "TTS processed successfully", "file_path": result_path}
+        output_path = os.path.join(UPLOAD_DIR, "openai_tts_output.mp3")
+        file_path = text_to_speech(text, output_path)
+        return {
+            "message": "TTS 처리 완료 (OpenAI TTS)",
+            "file_path": file_path
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
