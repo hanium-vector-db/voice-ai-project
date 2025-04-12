@@ -1,6 +1,15 @@
 # Python 3.11 이미지 사용
 FROM python:3.11-slim
 
+# 시스템 패키지 설치 (ffmpeg 포함)
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y ffmpeg
+
+
 # 작업 디렉토리 설정
 WORKDIR /app
 
