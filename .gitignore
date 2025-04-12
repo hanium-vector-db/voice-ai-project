@@ -1,3 +1,6 @@
+# app/routers/uploads 디렉토리 제외
+app/routers/uploads/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
