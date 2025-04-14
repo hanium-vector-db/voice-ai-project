@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Form
 from app.services.tts_service import text_to_speech
+from fastapi.responses import JSONResponse
 import os
 
 router = APIRouter()
@@ -11,11 +12,14 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 @router.post("/")
 async def tts_endpoint(text: str = Form(...)):
     try:
-        output_path = os.path.join(UPLOAD_DIR, "openai_tts_output.mp3")
-        file_path = text_to_speech(text, output_path)
+        file_name = "openai_tts_output.mp3"
+        output_path = os.path.join(UPLOAD_DIR, file_name)
+        # 실제 TTS 생성 처리
+        file_path = text_to_speech(text, output_path)  # 내부 저장용 절대경로
+        # 클라이언트용 웹 경로 반환
         return {
             "message": "TTS 처리 완료 (OpenAI TTS)",
-            "file_path": file_path
+            "file_path": f"/uploads/{file_name}"  #  웹 경로만 전달
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) 

@@ -67,3 +67,4 @@ if __name__ == "__main__":
     uvicorn.run("app.main:app", host="localhost", port=8000, reload=True)
 
 # uvicorn app.main:app --reload
+# python -m uvicorn app.main:app --reload
