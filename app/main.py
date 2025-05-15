@@ -21,6 +21,10 @@ if not OPENAI_API_KEY:
 
 app = FastAPI()
 
+# uploads 폴더의 실제 경로 지정
+UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "routers", "uploads")
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
 # CORS 허용
 app.add_middleware(
     CORSMiddleware,
@@ -60,7 +64,6 @@ async def get_api_key():
 # TTS 파일 저장 디렉토리
 upload_path = os.path.join(os.path.dirname(__file__), "routers", "uploads")
 print(f"정적 파일 경로: {upload_path}")  # 디버깅용 출력
-app.mount("/uploads", StaticFiles(directory=upload_path), name="uploads")
 
 if __name__ == "__main__":
     import uvicorn

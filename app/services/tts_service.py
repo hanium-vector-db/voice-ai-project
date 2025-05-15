@@ -8,7 +8,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def text_to_speech(text: str, output_path: str = "output.mp3"):
     url = "https://api.openai.com/v1/audio/speech"
-    
+        
     headers = {
         "Authorization": f"Bearer {OPENAI_API_KEY}",
         "Content-Type": "application/json"
