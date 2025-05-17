@@ -3,7 +3,7 @@ import os
 import shutil
 import logging
 from app.services.stt_service import transcribe_audio_file, convert_webm_to_wav
-from app.services.processor_service import get_gpt_response
+from app.services.processor_service import get_ai_response
 from app.services.tts_service import text_to_speech
 from fastapi import Form
 import uuid
@@ -27,7 +27,9 @@ LANGUAGE_TO_VOICE = {
 @router.post("/")
 async def stt_to_tts(
     audio: UploadFile = File(...),
-    language: str = Form("한국어")  # 기본값 한국어, 프론트에서 전달받음
+    language: str = Form("한국어"),  # 기본값 한국어, 프론트에서 전달받음
+    provider: str = Form("openai"),   # "openai" 또는 "ollama"
+    model: str = Form("gpt-4"),       # "gpt-4", "llama3" 등
 ):
     try:
         logger.info("STT → GPT → TTS 요청 시작")
@@ -47,7 +49,7 @@ async def stt_to_tts(
         logger.info(f"STT 변환 결과: {stt_text}")
 
         # 4. GPT 처리
-        gpt_response = get_gpt_response(stt_text, language=language)
+        gpt_response = get_ai_response(stt_text, language=language, provider=provider, model=model)
         logger.info(f"GPT 응답 텍스트: {gpt_response}")
 
         # 5. TTS 처리
