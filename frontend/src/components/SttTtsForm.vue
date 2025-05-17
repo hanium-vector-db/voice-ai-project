@@ -40,7 +40,7 @@ async function toggleRecording() {
       const blob = new Blob(audioChunks, { type: 'audio/webm' })
       const formData = new FormData()
       formData.append('audio', blob, 'recording.webm')
-      formData.append('language', language.value) // 언어 추가!
+      formData.append('language', language.value) // 언어 추가
       const res = await fetch('/stt-tts/', { method: 'POST', body: formData })
       const data = await res.json()
       sttText.value = data.stt_text

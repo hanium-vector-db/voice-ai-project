@@ -6,18 +6,16 @@ load_dotenv()  # .env 파일 불러오기
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 #텍스트 입력 → GPT 응답 받기
-def get_gpt_response(user_input):
+def get_gpt_response(user_input, language="한국어"):
     response = openai.ChatCompletion.create(
-        model="gpt-4",  #3.5터보로 바꿔서 사용해도 OK
+        model="gpt-4",
         messages=[
             {"role": "system",
-             "content": "당신은 친절하고 공손한 음성 비서입니다. 모르는 질문이나 이상한 말에는 '죄송해요, 이해하지 못했어요. 다시 한번 더 말씀해주시겠어요?'라고 대답하세요."},
+             "content": f"당신은 친절하고 공손한 음성 비서입니다. 모든 답변을 '{language}'로 해주세요. 모르는 질문이나 이상한 말에는 '{language}'로 '죄송해요, 이해하지 못했어요. 다시 한번 더 말씀해주시겠어요?'라고 대답하세요."},
             {"role": "user", "content": user_input}
-
         ],
-        temperature=0.8  #자연스러움 조절=>0부터 1까지 조절할 수 있음
+        temperature=0.8
     )
-
     reply = response.choices[0].message['content']
     return reply
 

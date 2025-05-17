@@ -6,18 +6,18 @@ load_dotenv()  # .env 파일 불러오기
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-def text_to_speech(text: str, output_path: str = "output.mp3"):
+def text_to_speech(text: str, output_path: str = "output.mp3", voice: str = "nova"):
     url = "https://api.openai.com/v1/audio/speech"
-        
+
     headers = {
         "Authorization": f"Bearer {OPENAI_API_KEY}",
         "Content-Type": "application/json"
     }
 
     data = {
-        "model": "tts-1",
+        "model": "tts-1",                       
         "input": text,
-        "voice": "nova"
+        "voice": voice
     }
 
     response = requests.post(url, headers=headers, json=data)
